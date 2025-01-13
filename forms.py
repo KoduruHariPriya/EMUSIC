@@ -1,426 +1,274 @@
-"""
-Form classes
-"""
+# forms.py
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser  # Adjust this import as needed
 
-import copy
-import datetime
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['name', 'password', 'address', 'mailid',]
 
-from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
-from django.forms.fields import Field
-from django.forms.utils import ErrorDict, ErrorList, RenderableFormMixin
-from django.forms.widgets import Media, MediaDefiningClass
-from django.utils.datastructures import MultiValueDict
-from django.utils.functional import cached_property
-from django.utils.translation import gettext as _
+# Registration
 
-from .renderers import get_default_renderer
+from django import forms
+from .models import Datas
 
-__all__ = ("BaseForm", "Form")
-
-
-class DeclarativeFieldsMetaclass(MediaDefiningClass):
-    """Collect Fields declared on the base classes."""
-
-    def __new__(mcs, name, bases, attrs):
-        # Collect fields from current class and remove them from attrs.
-        attrs["declared_fields"] = {
-            key: attrs.pop(key)
-            for key, value in list(attrs.items())
-            if isinstance(value, Field)
-        }
-
-        new_class = super().__new__(mcs, name, bases, attrs)
-
-        # Walk through the MRO.
-        declared_fields = {}
-        for base in reversed(new_class.__mro__):
-            # Collect fields from base class.
-            if hasattr(base, "declared_fields"):
-                declared_fields.update(base.declared_fields)
-
-            # Field shadowing.
-            for attr, value in base.__dict__.items():
-                if value is None and attr in declared_fields:
-                    declared_fields.pop(attr)
-
-        new_class.base_fields = declared_fields
-        new_class.declared_fields = declared_fields
-
-        return new_class
+class RegistrationForm(forms.ModelForm):
+    class Meta:
+        model = Datas
+        fields = ['Name', 'Age', 'Gender', 'Address', 'Contact', 'Mail']
 
 
-class BaseForm(RenderableFormMixin):
-    """
-    The main implementation of all the Form logic. Note that this class is
-    different than Form. See the comments by the Form class for more info. Any
-    improvements to the form API should be made to this class, not to the Form
-    class.
-    """
 
-    default_renderer = None
-    field_order = None
-    prefix = None
-    use_required_attribute = True
+from django import forms
+from .models import CustomUser
 
-    template_name_div = "django/forms/div.html"
-    template_name_p = "django/forms/p.html"
-    template_name_table = "django/forms/table.html"
-    template_name_ul = "django/forms/ul.html"
-    template_name_label = "django/forms/label.html"
+class CustomUserCreationForm(UserCreationForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
 
-    def __init__(
-        self,
-        data=None,
-        files=None,
-        auto_id="id_%s",
-        prefix=None,
-        initial=None,
-        error_class=ErrorList,
-        label_suffix=None,
-        empty_permitted=False,
-        field_order=None,
-        use_required_attribute=None,
-        renderer=None,
-    ):
-        self.is_bound = data is not None or files is not None
-        self.data = MultiValueDict() if data is None else data
-        self.files = MultiValueDict() if files is None else files
-        self.auto_id = auto_id
-        if prefix is not None:
-            self.prefix = prefix
-        self.initial = initial or {}
-        self.error_class = error_class
-        # Translators: This is the default suffix added to form field labels
-        self.label_suffix = label_suffix if label_suffix is not None else _(":")
-        self.empty_permitted = empty_permitted
-        self._errors = None  # Stores the errors after clean() has been called.
-
-        # The base_fields class attribute is the *class-wide* definition of
-        # fields. Because a particular *instance* of the class might want to
-        # alter self.fields, we create self.fields here by copying base_fields.
-        # Instances should always modify self.fields; they should not modify
-        # self.base_fields.
-        self.fields = copy.deepcopy(self.base_fields)
-        self._bound_fields_cache = {}
-        self.order_fields(self.field_order if field_order is None else field_order)
-
-        if use_required_attribute is not None:
-            self.use_required_attribute = use_required_attribute
-
-        if self.empty_permitted and self.use_required_attribute:
-            raise ValueError(
-                "The empty_permitted and use_required_attribute arguments may "
-                "not both be True."
-            )
-
-        # Initialize form renderer. Use a global default if not specified
-        # either as an argument or as self.default_renderer.
-        if renderer is None:
-            if self.default_renderer is None:
-                renderer = get_default_renderer()
-            else:
-                renderer = self.default_renderer
-                if isinstance(self.default_renderer, type):
-                    renderer = renderer()
-        self.renderer = renderer
-
-    def order_fields(self, field_order):
-        """
-        Rearrange the fields according to field_order.
-
-        field_order is a list of field names specifying the order. Append fields
-        not included in the list in the default order for backward compatibility
-        with subclasses not overriding field_order. If field_order is None,
-        keep all fields in the order defined in the class. Ignore unknown
-        fields in field_order to allow disabling fields in form subclasses
-        without redefining ordering.
-        """
-        if field_order is None:
-            return
-        fields = {}
-        for key in field_order:
-            try:
-                fields[key] = self.fields.pop(key)
-            except KeyError:  # ignore unknown fields
-                pass
-        fields.update(self.fields)  # add remaining fields in original order
-        self.fields = fields
-
-    def __repr__(self):
-        if self._errors is None:
-            is_valid = "Unknown"
-        else:
-            is_valid = self.is_bound and not self._errors
-        return "<%(cls)s bound=%(bound)s, valid=%(valid)s, fields=(%(fields)s)>" % {
-            "cls": self.__class__.__name__,
-            "bound": self.is_bound,
-            "valid": is_valid,
-            "fields": ";".join(self.fields),
-        }
-
-    def _bound_items(self):
-        """Yield (name, bf) pairs, where bf is a BoundField object."""
-        for name in self.fields:
-            yield name, self[name]
-
-    def __iter__(self):
-        """Yield the form's fields as BoundField objects."""
-        for name in self.fields:
-            yield self[name]
-
-    def __getitem__(self, name):
-        """Return a BoundField with the given name."""
-        try:
-            field = self.fields[name]
-        except KeyError:
-            raise KeyError(
-                "Key '%s' not found in '%s'. Choices are: %s."
-                % (
-                    name,
-                    self.__class__.__name__,
-                    ", ".join(sorted(self.fields)),
-                )
-            )
-        if name not in self._bound_fields_cache:
-            self._bound_fields_cache[name] = field.get_bound_field(self, name)
-        return self._bound_fields_cache[name]
-
-    @property
-    def errors(self):
-        """Return an ErrorDict for the data provided for the form."""
-        if self._errors is None:
-            self.full_clean()
-        return self._errors
-
-    def is_valid(self):
-        """Return True if the form has no errors, or False otherwise."""
-        return self.is_bound and not self.errors
-
-    def add_prefix(self, field_name):
-        """
-        Return the field name with a prefix appended, if this Form has a
-        prefix set.
-
-        Subclasses may wish to override.
-        """
-        return "%s-%s" % (self.prefix, field_name) if self.prefix else field_name
-
-    def add_initial_prefix(self, field_name):
-        """Add an 'initial' prefix for checking dynamic initial values."""
-        return "initial-%s" % self.add_prefix(field_name)
-
-    def _widget_data_value(self, widget, html_name):
-        # value_from_datadict() gets the data from the data dictionaries.
-        # Each widget type knows how to retrieve its own data, because some
-        # widgets split data over several HTML fields.
-        return widget.value_from_datadict(self.data, self.files, html_name)
-
-    @property
-    def template_name(self):
-        return self.renderer.form_template_name
-
-    def get_context(self):
-        fields = []
-        hidden_fields = []
-        top_errors = self.non_field_errors().copy()
-        for name, bf in self._bound_items():
-            if bf.is_hidden:
-                if bf.errors:
-                    top_errors += [
-                        _("(Hidden field %(name)s) %(error)s")
-                        % {"name": name, "error": str(e)}
-                        for e in bf.errors
-                    ]
-                hidden_fields.append(bf)
-            else:
-                fields.append((bf, bf.errors))
-        return {
-            "form": self,
-            "fields": fields,
-            "hidden_fields": hidden_fields,
-            "errors": top_errors,
-        }
-
-    def non_field_errors(self):
-        """
-        Return an ErrorList of errors that aren't associated with a particular
-        field -- i.e., from Form.clean(). Return an empty ErrorList if there
-        are none.
-        """
-        return self.errors.get(
-            NON_FIELD_ERRORS,
-            self.error_class(error_class="nonfield", renderer=self.renderer),
-        )
-
-    def add_error(self, field, error):
-        """
-        Update the content of `self._errors`.
-
-        The `field` argument is the name of the field to which the errors
-        should be added. If it's None, treat the errors as NON_FIELD_ERRORS.
-
-        The `error` argument can be a single error, a list of errors, or a
-        dictionary that maps field names to lists of errors. An "error" can be
-        either a simple string or an instance of ValidationError with its
-        message attribute set and a "list or dictionary" can be an actual
-        `list` or `dict` or an instance of ValidationError with its
-        `error_list` or `error_dict` attribute set.
-
-        If `error` is a dictionary, the `field` argument *must* be None and
-        errors will be added to the fields that correspond to the keys of the
-        dictionary.
-        """
-        if not isinstance(error, ValidationError):
-            # Normalize to ValidationError and let its constructor
-            # do the hard work of making sense of the input.
-            error = ValidationError(error)
-
-        if hasattr(error, "error_dict"):
-            if field is not None:
-                raise TypeError(
-                    "The argument `field` must be `None` when the `error` "
-                    "argument contains errors for multiple fields."
-                )
-            else:
-                error = error.error_dict
-        else:
-            error = {field or NON_FIELD_ERRORS: error.error_list}
-
-        for field, error_list in error.items():
-            if field not in self.errors:
-                if field != NON_FIELD_ERRORS and field not in self.fields:
-                    raise ValueError(
-                        "'%s' has no field named '%s'."
-                        % (self.__class__.__name__, field)
-                    )
-                if field == NON_FIELD_ERRORS:
-                    self._errors[field] = self.error_class(
-                        error_class="nonfield", renderer=self.renderer
-                    )
-                else:
-                    self._errors[field] = self.error_class(renderer=self.renderer)
-            self._errors[field].extend(error_list)
-            if field in self.cleaned_data:
-                del self.cleaned_data[field]
-
-    def has_error(self, field, code=None):
-        return field in self.errors and (
-            code is None
-            or any(error.code == code for error in self.errors.as_data()[field])
-        )
-
-    def full_clean(self):
-        """
-        Clean all of self.data and populate self._errors and self.cleaned_data.
-        """
-        self._errors = ErrorDict()
-        if not self.is_bound:  # Stop further processing.
-            return
-        self.cleaned_data = {}
-        # If the form is permitted to be empty, and none of the form data has
-        # changed from the initial data, short circuit any validation.
-        if self.empty_permitted and not self.has_changed():
-            return
-
-        self._clean_fields()
-        self._clean_form()
-        self._post_clean()
-
-    def _clean_fields(self):
-        for name, bf in self._bound_items():
-            field = bf.field
-            try:
-                self.cleaned_data[name] = field._clean_bound_field(bf)
-                if hasattr(self, "clean_%s" % name):
-                    value = getattr(self, "clean_%s" % name)()
-                    self.cleaned_data[name] = value
-            except ValidationError as e:
-                self.add_error(name, e)
-
-    def _clean_form(self):
-        try:
-            cleaned_data = self.clean()
-        except ValidationError as e:
-            self.add_error(None, e)
-        else:
-            if cleaned_data is not None:
-                self.cleaned_data = cleaned_data
-
-    def _post_clean(self):
-        """
-        An internal hook for performing additional cleaning after form cleaning
-        is complete. Used for model validation in model forms.
-        """
-        pass
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'name', 'email', 'password', 'address', 'mailid']
 
     def clean(self):
-        """
-        Hook for doing any extra form-wide cleaning after Field.clean() has been
-        called on every field. Any ValidationError raised by this method will
-        not be associated with a particular field; it will have a special-case
-        association with the field named '__all__'.
-        """
-        return self.cleaned_data
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
 
-    def has_changed(self):
-        """Return True if data differs from initial."""
-        return bool(self.changed_data)
+        if password != confirm_password:
+            raise forms.ValidationError("Passwords do not match.")
+        return cleaned_data
 
-    @cached_property
-    def changed_data(self):
-        return [name for name, bf in self._bound_items() if bf._has_changed()]
+from django import forms
+from .models import Artist
 
-    @property
-    def media(self):
-        """Return all media required to render the widgets on this form."""
-        media = Media()
-        for field in self.fields.values():
-            media += field.widget.media
-        return media
+class ArtistForm(forms.ModelForm):
+    class Meta:
+        model = Artist
+        fields = ['name', 'genre', 'birth_date', 'bio']
 
-    def is_multipart(self):
-        """
-        Return True if the form needs to be multipart-encoded, i.e. it has
-        FileInput, or False otherwise.
-        """
-        return any(field.widget.needs_multipart_form for field in self.fields.values())
+from django import forms
+from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.models import User
+from .models import UserProfile
 
-    def hidden_fields(self):
-        """
-        Return a list of all the BoundField objects that are hidden fields.
-        Useful for manual form layout in templates.
-        """
-        return [field for field in self if field.is_hidden]
+class ProfileUpdateForm(UserChangeForm):
+    profile_picture = forms.ImageField(required=False)
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'profile_picture']
 
-    def visible_fields(self):
-        """
-        Return a list of BoundField objects that aren't hidden fields.
-        The opposite of the hidden_fields() method.
-        """
-        return [field for field in self if not field.is_hidden]
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if 'profile_picture' in self.cleaned_data:
+            profile_picture = self.cleaned_data['profile_picture']
+            user.profile.profile_picture = profile_picture
+        if commit:
+            user.save()
+        return user
 
-    def get_initial_for_field(self, field, field_name):
-        """
-        Return initial data for field on form. Use initial data from the form
-        or the field, in that order. Evaluate callable values.
-        """
-        value = self.initial.get(field_name, field.initial)
-        if callable(value):
-            value = value()
-        # If this is an auto-generated default date, nix the microseconds
-        # for standardized handling. See #22502.
-        if (
-            isinstance(value, (datetime.datetime, datetime.time))
-            and not field.widget.supports_microseconds
-        ):
-            value = value.replace(microsecond=0)
-        return value
+# forms.py
+from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
+from .models import UserPreferences
+from django.contrib.auth.models import User
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+class PasswordChangeForm(forms.Form):
+    current_password = forms.CharField(widget=forms.PasswordInput, required=True)
+    new_password = forms.CharField(widget=forms.PasswordInput, required=True)
+    confirm_new_password = forms.CharField(widget=forms.PasswordInput, required=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password")
+        confirm_new_password = cleaned_data.get("confirm_new_password")
+        if new_password != confirm_new_password:
+            raise forms.ValidationError("Passwords do not match.")
+        return cleaned_data
+
+class NotificationPreferencesForm(forms.ModelForm):
+    class Meta:
+        model = UserPreferences
+        fields = ['email_notifications', 'sms_notifications']
+
+# In forms.py
+from django import forms
+from EMUSIC_Application.models import CustomUser
+
+class CustomUserCreationForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'password', 'email') # Add any additional fields here
 
 
-class Form(BaseForm, metaclass=DeclarativeFieldsMetaclass):
-    "A collection of Fields, plus their associated data."
-    # This is a separate class from BaseForm in order to abstract the way
-    # self.fields is specified. This class (Form) is the one that does the
-    # fancy metaclass stuff purely for the semantic sugar -- it allows one
-    # to define a form using declarative syntax.
-    # BaseForm itself has no way of designating self.fields.
+# forms.py
+from django import forms
+from .models import SubscriptionPlan, SongCategory, Genre, MusicTrack
+
+class SubscriptionPlanForm(forms.ModelForm):
+    class Meta:
+        model = SubscriptionPlan
+        fields = ['name', 'price', 'duration', 'features']
+
+class SongCategoryForm(forms.ModelForm):
+    class Meta:
+        model = SongCategory
+        fields = ['name']
+
+class GenreForm(forms.ModelForm):
+    class Meta:
+        model = Genre
+        fields = ['name']
+
+class MusicTrackForm(forms.ModelForm):
+    class Meta:
+        model = MusicTrack
+        fields = ['title', 'artist', 'genre', 'category', 'file', 'price']
+
+
+from django import forms
+from .models import SongRequest
+
+class SongRequestForm(forms.ModelForm):
+    class Meta:
+        model = SongRequest
+        fields = ['song_title', 'artist']
+
+
+# forms.py
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_picture', 'bio']  # Fields from UserProfile
+
+    bio = forms.CharField(widget=forms.Textarea, required=False)  # Add bio field if needed for the profile
+
+    # Adding extra fields for username and email from the CustomUser model
+    username = forms.CharField(max_length=150, required=True)
+    email = forms.EmailField(max_length=255, required=True)
+
+    def __init__(self, *args, **kwargs):
+        # Initialize the form with instance data
+        user = kwargs.get('instance')  # This should be a CustomUser instance
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        if user:
+            # Access the username and email directly from the CustomUser instance
+            self.fields['username'].initial = user.username
+            self.fields['email'].initial = user.email
+            # Access bio from UserProfile (not CustomUser)
+            self.fields['bio'].initial = user.userprofile.bio if user.userprofile else None  # Check for UserProfile
+
+    def save(self, commit=True):
+        # Save the profile data, including user information
+        user = super().save(commit=False)
+
+        # Ensure the user has a UserProfile (create it if it doesn't exist)
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
+
+        # Save the user and profile data
+        user.username = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']
+
+        # Save bio and profile picture to the UserProfile model
+        user_profile.bio = self.cleaned_data['bio']
+        user_profile.profile_picture = self.cleaned_data['profile_picture']
+
+        if commit:
+            user.save()
+            user_profile.save()
+
+        return user_profile
+
+
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser  # Correct import of CustomUser model
+
+class SignupForm(UserCreationForm):
+    email = forms.EmailField(
+        max_length=254,
+        help_text='Enter a valid email address',
+        error_messages={
+            'invalid': 'Please enter a valid email address.',
+            'required': 'Email address is required.',
+        }
+    )
+    first_name = forms.CharField(
+        max_length=100,
+        error_messages={'required': 'First name is required.'}
+    )
+    last_name = forms.CharField(
+        max_length=100,
+        error_messages={'required': 'Last name is required.'}
+    )
+    
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']  # Using 'email' instead of 'mailid'
+
+        error_messages = {
+            'username': {
+                'required': 'This field is required.',
+                'unique': 'This username is already taken.',
+            },
+            'password1': {
+                'required': 'Please enter a password.',
+            },
+            'password2': {
+                'required': 'Please confirm your password.',
+                'mismatch': 'The two password fields don’t match.',
+            },
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')  # Using 'email' field name
+        if CustomUser.objects.filter(mailid=email).exists():  # Check against 'mailid' in model
+            raise forms.ValidationError('This email is already taken.')
+        return email
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.mailid = self.cleaned_data.get('email')  # Setting the 'mailid' field in model
+        if commit:
+            user.save()
+        return user
+
+
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    
+
+
+from django import forms
+from .models import SubscriptionPlan
+
+class SubscriptionPlanForm(forms.ModelForm):
+    class Meta:
+        model = SubscriptionPlan
+        fields = ['name', 'description', 'price', 'is_active']
+
+
+from django.conf import settings
+
+admin_email = settings.ADMIN_EMAIL  # This will give you the value from settings.py
+
+
+# forms.py
+from django import forms
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
