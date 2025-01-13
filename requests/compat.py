@@ -7,6 +7,7 @@ between Python 2 and Python 3. It remains for backwards
 compatibility until the next major version.
 """
 
+import importlib
 import sys
 
 # -------------------
@@ -17,6 +18,12 @@ import sys
 def _resolve_char_detection():
     """Find supported character detection libraries."""
     chardet = None
+    for lib in ("chardet", "charset_normalizer"):
+        if chardet is None:
+            try:
+                chardet = importlib.import_module(lib)
+            except ImportError:
+                pass
     return chardet
 
 
@@ -35,10 +42,19 @@ is_py2 = _ver[0] == 2
 #: Python 3.x?
 is_py3 = _ver[0] == 3
 
-# Note: We've patched out simplejson support in pip because it prevents
-#       upgrading simplejson on Windows.
-import json
-from json import JSONDecodeError
+# json/simplejson module import resolution
+has_simplejson = False
+try:
+    import simplejson as json
+
+    has_simplejson = True
+except ImportError:
+    import json
+
+if has_simplejson:
+    from simplejson import JSONDecodeError
+else:
+    from json import JSONDecodeError
 
 # Keep OrderedDict for backwards compatibility.
 from collections import OrderedDict
