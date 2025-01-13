@@ -1,0 +1,205 @@
+
+{% block content %}
+  <!-- Header for Subscription Management -->
+  <header style="background-image: url('https://source.unsplash.com/1600x900/?music'); background-size: cover; background-position: center; padding: 120px 20px; color: white; text-align: center; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);">
+    <h1 style="font-size: 5rem; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 2px; text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4); color: #61dafb; text-transform: uppercase;">Manage Subscription Plans</h1>
+    <p style="font-size: 1.6rem; max-width: 800px; margin: 20px auto; font-weight: 300; opacity: 0.9;">Manage and customize your subscription offerings to deliver flexible options for users. Add or modify subscription plans here.</p>
+  </header>
+
+  <!-- Subscription Plan Form -->
+  <div style="padding: 40px 20px; text-align: center;">
+    <form method="POST" style="max-width: 600px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 15px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);">
+      {% csrf_token %}
+      <div style="margin-bottom: 20px;">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" style="background-color: #ff6347; padding: 16px 32px; color: white; border-radius: 25px; font-size: 18px; border: none; width: 100%; transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);">
+        Save Plan
+      </button>
+    </form>
+  </div>
+
+  <!-- Existing Plans -->
+  <section style="padding: 60px 20px; background-color: #2c3e50; color: white; text-align: center;">
+    <h2 style="font-size: 3.5rem; font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px;">Existing Subscription Plans</h2>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      {% for plan in plans %}
+        <li style="font-size: 1.2rem; margin: 20px 0; padding: 10px; background-color: #34495e; border-radius: 15px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>{{ plan.name }}</strong> - ${{ plan.price }} for {{ plan.duration }} months
+          </div>
+          <button type="button" class="clear-plan-btn" data-plan-id="{{ plan.id }}" style="background-color: #e74c3c; padding: 8px 16px; color: white; border-radius: 15px; font-size: 14px; border: none; cursor: pointer; transition: background-color 0.3s ease;">
+            Clear Plan
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background-color: #333; color: #fff; text-align: center; padding: 20px; margin-top: 60px; font-size: 14px; letter-spacing: 1px;">
+    <p>&copy; 2024 EMusic. All Rights Reserved. | <a href="/terms/" style="color: #ff6347; text-decoration: none;">Terms of Service</a> | <a href="/privacy/" style="color: #ff6347; text-decoration: none;">Privacy Policy</a></p>
+  </footer>
+
+  <!-- JavaScript for Clearing Plan -->
+  <!-- manage_plans.html -->
+
+{% block extra_js %}
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const removeButtons = document.querySelectorAll('.clear-plan-btn');
+            
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const planId = this.getAttribute('data-plan-id');
+                    
+                    fetch(`/subscriptions/remove_plan/${planId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ id: planId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Plan removed successfully!');
+                            document.getElementById(`plan-${planId}`).remove(); // Remove the row from the table
+                        } else {
+                            alert('Failed to remove plan: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while removing the plan.');
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+<style>
+  /* Global Styles */
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000000; /* Dark theme */
+    color: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #61dafb; /* Soft blue color */
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    font-weight: 400;
+    opacity: 0.8;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Form Styles */
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  button[type="submit"] {
+    background-color: #ff6347;
+    padding: 16px 32px;
+    color: rgb(38, 37, 37);
+    border-radius: 25px;
+    font-size: 18px;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  button[type="submit"]:hover {
+    background-color: #f39c12;
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Clear Plan Button */
+  #clear-plan {
+    background-color: #e74c3c;
+    padding: 16px 32px;
+    color: white;
+    border-radius: 25px;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  #clear-plan:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Footer */
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  footer a {
+    color: #ff6347;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Plan Items */
+  .clear-plan-btn {
+    background-color: #e74c3c;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 15px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .clear-plan-btn:hover {
+    background-color: #c0392b;
+  }
+</style>
+
+{% endblock %}

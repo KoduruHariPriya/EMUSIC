@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMusic</title>
+
+    <!-- Link to Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+            color: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #61dafb;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+       
+      
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #21252b;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #f37712;
+            background-color: transparent;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #21252b;
+            color: #61dafb;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Search Bar Styles */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border-radius: 25px;
+            padding: 10px 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar input {
+            border: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 15px;
+            outline: none;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .search-bar button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #f39c12;
+        }
+
+        .mic-icon {
+            cursor: pointer;
+            font-size: 32px;
+            color: #ff6347;
+            margin-left: 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-image: url("{% static 'images/bg2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            padding: 120px 20px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 5rem;
+            text-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.6rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            z-index: 0;
+        }
+
+        /* Section Styles */
+        section.genres {
+            background-color: #21252b;
+            padding: 60px 20px;
+            width: 100%;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        section.genres h2 {
+            font-size: 3.5rem;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .genre-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px;
+            width: 280px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: rgb(255, 255, 255);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .genre-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .genre-card img {
+            width: 100%;
+            border-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .genre-card h3 {
+            font-size: 2rem;
+            color: #f39c12;
+            margin-top: 15px;
+        }
+
+        .audio-player {
+            margin-top: 15px;
+        }
+
+        footer {
+            background-color: #21252b;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #ff6347;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            section.genres h2 {
+                font-size: 2.5rem;
+            }
+
+            .genre-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+            <li><a href="{% url 'home' %}"><i class="fas fa-phone-alt"></i>Home</a></li>
+            <li><a href="{% url 'subscription_plans' %}"><i class="fas fa-credit-card"></i> Subscription Plans</a></li>
+            <li><a href="https://open.spotify.com/content-feed/" target="_blank"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="https://open.spotify.com" target="_blank"><i class="fas fa-music"></i> Songs</a></li>
+        </ul>
+        <div class="search-bar">
+            <input type="text" name="search_query" placeholder="Search songs, artists..." id="searchInput">
+            <button onclick="searchSong()">Search</button>
+            <i class="fas fa-microphone mic-icon" onclick="startVoiceSearch()"></i>
+        </div>
+            <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+
+    </nav>
+
+    <header>
+        <h1>Welcome to EMusic</h1>
+        <p>Your one-stop platform to discover new music and connect with artists worldwide.</p>
+    </header>
+
+    <div id="searchResults"></div>
+
+    <h1>Explore Music Genres</h1>
+    <p>Your gateway to discovering different genres and artists.</p>
+
+    <section class="genres">
+        <h2>Music Genres</h2>
+        <div class="genre-card" onclick="loadGenreSongs('rock')">
+            <img src="{% static 'images/rock music.jpg' %}" alt="Rock Genre">
+            <h3>Rock</h3>
+        </div>
+        <div class="genre-card" onclick="loadGenreSongs('pop')">
+            <img src="{% static 'images/pop music.jpg' %}" alt="Pop Genre">
+            <h3>Pop</h3>
+        </div>
+        <div class="genre-card" onclick="loadGenreSongs('jazz')">
+            <img src="{% static 'images/jazz music.jpg' %}" alt="Jazz Genre">
+            <h3>Jazz</h3>
+        </div>
+    </section>
+
+    <div id="songsList"></div>
+
+    <script>
+        // Voice Search code
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        function startVoiceSearch() {
+            recognition.start();
+        }
+
+        recognition.onresult = function(event) {
+            const query = event.results[0][0].transcript;
+            document.getElementById('searchInput').value = query;
+            searchSong();
+        }
+
+        // Function to search song on Spotify
+        function searchSong() {
+            const query = document.getElementById('searchInput').value;
+            const searchUrl = `https://open.spotify.com/search/${encodeURIComponent(query)}`;
+            window.location.href = searchUrl;
+        }
+
+        // Function to load genre-specific songs from Spotify
+        function loadGenreSongs(genre) {
+            const genreUrl = `https://open.spotify.com/genre/${genre}`;
+            window.location.href = genreUrl;
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2024 EMusic. All Rights Reserved. | <a href="/terms/">Terms of Service</a> | <a href="/privacy/">Privacy Policy</a></p>
+    </footer>
+
+</body>
+</html>

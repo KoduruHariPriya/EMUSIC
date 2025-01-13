@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #141414;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            color: #61dafb;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .profile-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .profile-info {
+            background: #34495e;
+            padding: 30px;
+            margin: 20px auto;
+            width: 70%;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .profile-info label {
+            font-weight: bold;
+            color: #f39c12;
+        }
+
+        .profile-info input,
+        .profile-info textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            background: #333;
+            color: white;
+        }
+
+        .profile-info button {
+            background-color: #ff6347;
+            color: white;
+            padding: 12px 40px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-info button:hover {
+            background-color: #f39c12;
+        }
+
+        .profile-info a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .profile-info a:hover {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Update Your Profile</h1>
+
+    <div class="profile-container">
+        <div class="profile-info">
+            <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <label for="profile_picture">Profile Picture</label>
+                <input type="file" id="profile_picture" name="profile_picture" />
+
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ form.username.value }}" />
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ form.email.value }}" />
+
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="bio" rows="4">{{ form.bio.value }}</textarea>
+
+                <button type="submit">Save Changes</button>
+            </form>
+
+            <!-- Back to Profile Button -->
+            <button>
+                <a href="{% url 'my_profile' %}">Back to Profile</a>
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>

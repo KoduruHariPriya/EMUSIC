@@ -1,0 +1,483 @@
+{% load static %}  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Link to Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a; /* Dark theme */
+            color: #fff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #61dafb; /* Soft blue color */
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #21252b;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #f37712;
+            background-color: transparent;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #21252b;
+            color: #61dafb;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Search Bar Styles */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border-radius: 25px;
+            padding: 10px 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar input {
+            border: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 15px;
+            outline: none;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .search-bar button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #f39c12;
+        }
+
+        .mic-icon {
+            cursor: pointer;
+            font-size: 32px;
+            color: #ff6347;
+            margin-left: 15px;
+        }
+  
+        .recording {
+         color: red;  /* Changes the microphone icon color to red when recording */
+}
+
+        /* Header Section */
+        header {
+            background-image: url("{% static 'images/dashboard.jpg' %}"); /* Change to your image file name */
+            background-size: cover;
+            background-position: center;
+            padding: 120px 20px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 5rem;
+            text-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.6rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            z-index: 0;
+        }
+
+        /* Dashboard Content Section */
+        .content-section {
+            width: 100%;
+            padding: 60px 20px;
+        }
+
+        .content-section h2 {
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Flexbox grid for the section cards */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .card {
+            background: #21252b;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px;
+            width: 280px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: white;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            color: #f39c12;
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+        }
+
+        /* Button Style */
+        button {
+            background-color: #ff6347; /* Orange color */
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #f39c12;
+            transform: scale(1.05);
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            p {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav a {
+                width: 80%;
+            }
+
+            .button {
+                width: 80%;
+            }
+
+            .service-card {
+                width: 90%;
+                margin: 10px 0;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #21252b;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #ff6347;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-left">
+            <a href="/" class="logo">Home</a>
+        </div>
+
+        <div class="nav-right">
+            <div class="search-bar">
+                <input type="text" id="songSearch" placeholder="Search for a song...">
+                <button onclick="searchSong()">Search</button>
+                <i class="fas fa-microphone mic-icon" onclick="startVoiceSearch()"></i>
+            </div>
+            
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <h1>Welcome to Your EMusic Dashboard</h1>
+        <p>Your personalized music journey starts here</p>
+    </header>
+
+    <!-- Song Search Results -->
+    <section class="song-result" id="songResultSection">
+        <p id="songResultText"></p>
+        <audio id="songPlayer" controls style="display:none;">
+            <source id="songSource" type="audio/mpeg">
+        </audio>
+    </section>
+
+    <!-- Dashboard Content -->
+    <section class="content-section">
+        <h2>Dashboard</h2>
+        <div class="card-container">
+            <!-- My Profile Section -->
+            <div class="card">
+                <h3>View Profile</h3>
+                <p>Manage your personal details and preferences.</p>
+                <button onclick="window.location.href='/my_profile'">View Profile</button>
+            </div>
+
+        
+
+            <!-- Recent Activity Section -->
+            <div class="card">
+                <h3>Check Activity</h3>
+                <p>View your recent activity including tracks played.</p>
+                <button onclick="window.location.href='/recent-activity'">View Activity</button>
+            </div>
+
+            <!-- Manage Playlists Section -->
+            <div class="card">
+                <h3>Manage Playlists</h3>
+                <p>View and manage your personal playlists.</p>
+                <button onclick="window.location.href='/manage-playlists'">Manage Playlists</button>
+            </div>
+
+            <!-- Music Feed Section -->
+            <div class="card">
+                <h3>Explore the Latest Music Trends</h3>
+                <p>Stay updated with the hottest artists, albums, and tracks. Discover new music tailored to your taste!</p>
+                <button onclick="window.location.href='/music-feed'">Music Feed</button>
+            </div>
+
+            <!-- AI Recommendations Section -->
+            <div class="card">
+                <h3>AI Recommendations</h3>
+                <p>Get music suggestions based on your preferences.</p>
+                <button onclick="window.location.href='/ai-recommendations'">AI Recommendations</button>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="card">
+                <h3>Settings</h3>
+                <p>Manage your account and preferences.</p>
+                <button onclick="window.location.href='/settings'">Settings</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 EMusic. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Voice Search code
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'en-US';
+recognition.continuous = false;
+recognition.interimResults = false;
+
+// Trigger the voice search when the mic icon is clicked
+function startVoiceSearch() {
+    recognition.start();
+}
+
+recognition.onresult = function(event) {
+    const query = event.results[0][0].transcript;
+    document.getElementById('songSearch').value = query;  // Set the search input to the voice query
+    searchSong();  // Trigger the search function
+}
+
+// Search song based on the search input or voice query
+function searchSong() {
+    const searchQuery = document.getElementById('songSearch').value.toLowerCase();
+
+    if (searchQuery.trim() !== "") {
+        const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(searchQuery)}`;
+        window.location.href = spotifySearchUrl;  // Redirect to Spotify search page
+
+        const songPlayer = document.getElementById('songPlayer');
+        const songSource = document.getElementById('songSource');
+        songSource.src = spotifySearchUrl;  // Set the song source URL
+        songPlayer.style.display = "block";  // Display the audio player
+    } else {
+        alert("Please enter a song name to search.");
+    }
+}
+
+// Media Recording functionality (for mic recording)
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+function toggleRecording() {
+    if (isRecording) {
+        stopRecording();  // Stop the recording
+    } else {
+        startRecording();  // Start the recording
+    }
+    isRecording = !isRecording;  // Toggle recording state
+    document.getElementById("micIcon").classList.toggle("recording", isRecording);  // Toggle icon color
+}
+
+// Start recording
+function startRecording() {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ audio: true })  // Request audio access
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);  // Create MediaRecorder instance
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);  // Store audio chunks
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });  // Create Blob from chunks
+                    const audioUrl = URL.createObjectURL(audioBlob);  // Create URL for audio file
+                    const audio = new Audio(audioUrl);  // Create audio element
+                    audio.play();  // Play the recorded audio
+                };
+
+                mediaRecorder.start();  // Start the recording
+                alert("Recording started... Click the mic icon again to stop.");
+            })
+            .catch(error => {
+                alert("Error accessing the microphone: " + error.message);  // Handle errors (e.g., permission denied)
+            });
+    } else {
+        alert("Your browser does not support voice recording.");
+    }
+}
+
+// Stop recording
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();  // Stop the recording
+        alert("Recording stopped.");
+    }
+}
+
+
+    </script>
+
+       
+</body>
+</html>

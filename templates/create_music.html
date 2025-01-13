@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Music Lyrics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e7f7e7;
+            border-radius: 8px;
+            border: 1px solid #4CAF50;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Create Music Lyrics</h1>
+
+    <form id="musicForm" method="POST" action="/create_music/">
+        <div class="form-group">
+            <label for="title">Music Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Music Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <button type="submit">Generate Lyrics</button>
+    </form>
+
+    <div class="result" id="lyricsResult">
+        <h2>Generated Lyrics</h2>
+        <pre id="lyricsText"></pre>
+    </div>
+</div>
+
+<script>
+    document.getElementById("musicForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
+
+        // Prepare the data to send in the request
+        const data = {
+            title: title,
+            description: description
+        };
+
+        // Send the request to the server (assuming JSON format)
+        fetch('/create_music/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Display the generated lyrics
+                document.getElementById("lyricsResult").style.display = 'block';
+                document.getElementById("lyricsText").textContent = data.lyrics;
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error generating the lyrics.');
+        });
+    });
+</script>
+
+</body>
+</html>

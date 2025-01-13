@@ -1,0 +1,191 @@
+<!-- myproject/templates/contact.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - EMusic</title>
+
+    <!-- Adding Google Fonts for a professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #1a1a1a;
+            color: #000000;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #21252b;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            margin-bottom: 10px;
+            
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color:#f39c12;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            color: #0e151d;
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #000000;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        form label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        form textarea {
+            resize: vertical;
+        }
+
+        form input[type="submit"] {
+            background-color: #1e2a38;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 15px 30px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #ffffff;
+        }
+
+        footer {
+            background-color: #21252b;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* Adding responsiveness */
+        @media (max-width: 768px) {
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            section {
+                margin: 20px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Contact Us</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <section>
+        <h2>Get in Touch</h2>
+        <p>If you have any questions or feedback, feel free to contact us via the form below. We would love to hear from you!</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="4" required></textarea><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 EMusic. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

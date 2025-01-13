@@ -1,0 +1,481 @@
+{% load static %}  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Home</title>
+
+    <!-- Link to Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #000000; /* Adjusted text color to match the new background */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #61dafb; /* Soft blue color */
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #21252b;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #f37712;
+            background-color: transparent;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #21252b;
+            color: #61dafb;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Search Bar Styles */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border-radius: 25px;
+            padding: 10px 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar input {
+            border: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 15px;
+            outline: none;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .search-bar button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #f39c12;
+        }
+
+        /* User Info Styles */
+        .user-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white; /* Ensures all text in user-info is white */
+            text-align: right;
+        }
+
+        .user-info h2 {
+            color: white; /* Ensures the user name text is white */
+        }
+
+        .user-info .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .user-info .profile img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .user-info .button {
+            margin-top: 10px;
+            background-color: #ff6347;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-info .button:hover {
+            background-color: #f39c12;
+        }
+         
+        /* Custom color for welcome username */
+        .welcome-username, .welcome-guest {
+            color: #61dafb;
+            font-weight: 700;
+        }
+        
+
+        /* Button Styles */
+        .button {
+            display: inline-block;
+            background-color: #ff6347;
+            padding: 16px 32px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:hover {
+            background-color: #f39c12;
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            p {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav a {
+                width: 80%;
+            }
+
+            .button {
+                width: 80%;
+            }
+
+            .service-card {
+                width: 90%;
+                margin: 10px 0;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #21252b;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #ff6347;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Background */
+        header {
+            background-image: url("{% static 'images/bg1 +.png' %}"); /* Change to your image file name */
+            background-size: cover;
+            background-position: center;
+            padding: 120px 20px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 5rem;
+            text-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.6rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            z-index: 0;
+        }
+
+        /* Section with Card style for services */
+        .services {
+            background-color: #21252b;
+            padding: 60px 20px;
+            width: 100%;
+            text-align: center;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .services h2 {
+            font-size: 3.5rem;
+            color: #ffffff;
+            margin-top: 40px;
+        }
+
+        .services .service-card {
+            background: #21252b;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px;
+            width: 280px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: rgb(255, 255, 255);
+            display: inline-block;
+            margin-bottom: 0px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .services .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(253, 182, 182, 0.3);
+        }
+
+        .services .service-card h3 {
+            font-size: 3.5rem;
+            color: #fbfbfb;
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .services .service-card p {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+        }
+
+        .services .service-card.music-discovery {
+            background-image: url("{% static 'images/music discovery.jpg' %}");
+        }
+
+        .services .service-card.artist-collab {
+            background-image: url("{% static 'images/artist collab.jpg' %}");
+        }
+
+        .services .service-card.live-concert {
+            background-image: url("{% static 'images/live concert.jpg' %}");
+        }
+
+        /* New Professional Section */
+        .professional-content {
+            background-image: url("{% static 'images/professional-bg.jpg' %}"); /* Change to a professional image */
+            background-size: cover;
+            color: #ecf0f1;
+            padding: 60px 20px;
+            width: 100%;
+            text-align: center;
+            margin-top: 60px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .professional-content h2 {
+            font-size: 3.5rem;
+            margin-bottom: 40px;
+        }
+
+        .professional-content p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Login</a></li>
+            <li><a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i>Signup</a></li>
+            <li><a href="{% url 'emusic' %}"><i class="fas fa-sign-in-alt"></i>Emusic</a></li>
+            <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i>About Us</a></li>
+            <li><a href="{% url 'contact' %}"><i class="fas fa-phone-alt"></i>Contact Us</a></li>
+            
+
+        </ul>
+
+        <div class="search-bar">
+            <input type="text" name="search_query" placeholder="Search songs, artists..." id="searchInput">
+            <button onclick="searchSong()">Search</button>
+        </div>
+    </nav>
+
+    <header>
+            <!-- Logo Section -->
+            <div style="flex-shrink: 0; margin-right: 20px;">
+                <img src="{% static 'images/logo.png' %}" alt="EMusic Logo" style="width: 90px; height: 90px; object-fit: contain; border-radius: 50%; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);">
+            </div>
+        <h1>Welcome to EMusic</h1>
+        <p>Your one-stop platform to discover new music and connect with artists worldwide.</p>
+    </header>
+
+    <!-- Display search results or message -->
+    <div id="searchResults"></div>
+    <div style="text-align: right; padding: 10px;">
+        {% if user.is_authenticated %}
+        <h2 class="welcome-username">Welcome, {{ user.username }}!</h2>
+        <div class="profile">
+            </div>
+        {% else %}
+            <h2 class="welcome-guest"><p>Welcome, Guest!</p></h2>
+            <button><a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a></button>
+        {% endif %}
+    </div>
+    
+
+
+        <section class="services">
+            <div class="service-card music-discovery">
+                <h3>Music Discovery</h3>
+                <p>Explore new artists, genres, and playlists from around the world.</p>
+            </div>
+            <div class="service-card artist-collab">
+                <h3>Artist Collaboration</h3>
+                <p>Collaborate with musicians, producers, and other artists globally.</p>
+            </div>
+            <div class="service-card live-concert">
+                <h3>Live Concerts</h3>
+                <p>Stream live concerts and interact with your favorite artists.</p>
+            </div>
+        </section>
+    
+        <section class="professional-content">
+            <h2>Why Choose EMusic?</h2>
+            <p>EMusic provides a comprehensive platform for artists and music lovers. With features like live streaming, artist collaboration, and endless music discovery, EMusic helps you stay on top of the latest trends, meet like-minded creators, and be part of the global music community.</p>
+            <p>Our mission is to foster creativity and collaboration in the music world by providing the tools artists need to thrive in a digital age.</p>
+            <a href="#" class="button">Get Started</a>
+        </section>
+    
+        
+         </section>
+    
+        <footer>
+            <p>&copy; 2024 EMusic. All Rights Reserved. | <a href="/terms/">Terms of Service</a> | <a href="/privacy/">Privacy Policy</a></p>
+        </footer>
+    
+        <script>
+            function searchSong() {
+    const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+    // If the search query is not empty
+    if (searchQuery.trim() !== "") {
+        // Construct the Spotify search URL
+        const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(searchQuery)}`;
+
+        // Redirect to the Spotify search URL
+        window.location.href = spotifySearchUrl;
+
+        // Automatically try to play the song if the user is logged in
+        // This part depends on Spotify integration and will depend on the app's settings.
+        // You might also consider adding a direct song URL if known
+        // Example for direct track play (need to know the song's Spotify ID):
+        // window.location.href = "spotify:track:TRACK_ID";
+    } else {
+        alert("Please enter a song name to search.");
+    }
+}
+
+
+        </script>
+    
+  
+    
+</body>
+</html>

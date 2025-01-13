@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0d1117;
+            color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            margin-top: 40px;
+            color: #ff6347;
+        }
+
+        .settings-container {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 40px;
+            background-color: #161b22;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: #f39c12;
+            margin-bottom: 25px;
+        }
+
+        .user-detail {
+            margin: 12px 0;
+            font-size: 1.4rem;
+            color: #c9d1d9;
+        }
+
+        .user-detail strong {
+            color: #f39c12;
+        }
+
+        .notification-toggle {
+            margin: 30px 0;
+            font-size: 1.4rem;
+        }
+
+        #showNotifications {
+            display: inline-block;
+            background-color: #ff6347;
+            color: #ffffff;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+        }
+
+        #showNotifications:hover {
+            background-color: #ff6347;
+        }
+
+        #notifications {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #21262d;
+            background-color: #21262d;
+            border-radius: 10px;
+            text-align: left;
+            color: #c9d1d9;
+        }
+
+        .notification-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #2f363d;
+        }
+
+        .btn {
+            background-color: #ff6347;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff6347;
+        }
+
+        footer {
+            margin-top: 60px;
+            background-color: #131a20;
+            color: #ffffff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Account Settings</h1>
+
+    <div class="settings-container">
+        <!-- User Details Section -->
+        <div class="user-details">
+            <div class="section-title">User Details</div>
+            <div class="user-detail" id="userName"><strong>Name:</strong> <span id="displayName"></span></div>
+            <div class="user-detail" id="userEmail"><strong>Email:</strong> <span id="userEmailDisplay"></span></div>
+        </div>
+
+        <!-- Notification Settings Section -->
+        <div class="notification-toggle">
+            <a href="https://www.spotify.com/us/account/notifications/" target="_blank" class="btn">Show Notifications</a>
+        </div>
+        <div id="notifications"></div>
+
+        <!-- Subscription Plan Section -->
+        <div class="subscription-container">
+            <div class="section-title">Subscription Plan</div>
+            <div class="user-detail"><strong>Current Plan:</strong> <span id="currentPlan"></span></div>
+            <a href="https://www.spotify.com/us/account/manage-your-plan/" target="_blank" class="btn">Manage Subscription</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 EMusic. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Fetch Spotify user data (simulate API call)
+        async function loadUserData() {
+            try {
+                // Simulate fetching real Spotify user data (replace with actual API)
+                const spotifyUserData = {
+                    displayName: "Haripriya", // Replace with dynamic name loading
+                    email: "haripriyakoduru039@gmail.com",
+                    subscription: "Free",
+                    nextBillingDate: "",
+                    notifications: [
+                        "What’s New",
+                        "Your 2024 Wrapped is ready!",
+                        "Discover concerts the latest releases from artists, podcasts and shows you follow, based on your listening habits."
+                    ],
+                         notificationsLink: "https://www.spotify.com/us/account/notifications/" // Link to manage notifications
+                };
+
+                document.getElementById("displayName").textContent = spotifyUserData.displayName;
+                document.getElementById("userEmailDisplay").textContent = spotifyUserData.email;
+                document.getElementById("currentPlan").textContent = spotifyUserData.subscription;
+                document.getElementById("nextBilling").textContent = spotifyUserData.nextBillingDate;
+
+                document.getElementById("showNotifications").addEventListener("click", () => {
+                    const notificationDiv = document.getElementById("notifications");
+                    if (notificationDiv.style.display === "none" || !notificationDiv.style.display) {
+                        notificationDiv.style.display = "block";
+                        notificationDiv.innerHTML = spotifyUserData.notifications
+                            .map(note => `<div class='notification-item'>${note}</div>`)
+                            .join('');
+                        notificationDiv.innerHTML += `<div class='notification-item'>
+                                                        <a href="${spotifyUserData.notificationsLink}" target="_blank" class="btn">Manage Notifications</a>
+                                                    </div>`;
+                    } else {
+                        notificationDiv.style.display = "none";
+                    }
+                });
+            } catch (error) {
+                console.error("Error loading user data:", error);
+            }
+        }
+
+        loadUserData();
+    </script>
+
+</body>
+</html>

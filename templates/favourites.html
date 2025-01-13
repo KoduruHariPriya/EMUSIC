@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourites</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: #fff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #61dafb;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .content-section {
+            width: 100%;
+            padding: 60px 20px;
+        }
+
+        .content-section h2 {
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .music-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .music-card {
+            background: #34495e;
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .music-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-card h3 {
+            font-size: 1.8rem;
+            color: #f39c12;
+        }
+
+        .music-card p {
+            font-size: 1.2rem;
+            color: #ecf0f1;
+        }
+
+        .music-card .artist {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+            margin-top: 10px;
+        }
+
+        .music-card .play-button {
+            margin-top: 20px;
+            background: #61dafb;
+            border: none;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .music-card .play-button:hover {
+            background: #4fa3e1;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Favourites</h1>
+    </header>
+
+    <section class="content-section">
+        <h2>Favourite Tracks</h2>
+
+        <div class="music-feed">
+            {% if favourite_tracks %}
+                {% for track in favourite_tracks %}
+                    <div class="music-card">
+                        <h3>{{ track.title }}</h3>
+                        <p>{{ track.artist }}</p>
+                        <div class="artist">{{ track.genre }}</div>
+                        <button class="play-button">Play</button>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You have no favorite tracks yet!</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 EMusic. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
