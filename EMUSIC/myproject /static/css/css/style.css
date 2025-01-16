@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    width: 200px;
+    float: left;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 10px 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+.content h1 {
+    color: #6200ea;
+}
+
+
+/* Dashboard Background */
+header {
+    background-image: url('images/emusic logo.png'); /* Updated with local image */
+    background-size: cover;
+    background-position: center;
+    padding: 120px 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    text-align: center;
+    position: relative;
+    color: white;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    color: #333;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Navigation Styles - Positioned at the top-left corner */
+nav {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    background-color: #ff6347;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #f39c12;
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+}
+
+nav a i {
+    margin-right: 12px;
+}
+
+/* Search Bar Styles - Positioned at the top-right corner */
+.search-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #000000;
+    border-radius: 25px;
+    padding: 10px 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar input {
+    border: none;
+    padding: 8px 15px;
+    font-size: 16px;
+    border-radius: 15px;
+    outline: none;
+    margin-right: 10px;
+    width: 300px;
+}
+
+.search-bar button {
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #f39c12;
+}
