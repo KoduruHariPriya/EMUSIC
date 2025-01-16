@@ -1,0 +1,12 @@
+ <!-- Display Search Results if Available -->
+ {% if results %}
+ <h2>Search Results:</h2>
+ <ul>
+     {% for track in results %}
+         <li>{{ track.title }} by {{ track.artist }}</li>
+     {% endfor %}
+ </ul>
+{% else %}
+ <p>No results found.</p>
+{% endif %}
+

@@ -1,0 +1,154 @@
+<!-- myproject/templates/about.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - EMusic</title>
+
+    <!-- Adding Google Fonts for a professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #1a1a1a;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: #21252b;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color:#f39c12;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            color: #1e2a38;
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        footer {
+            background-color: #21252b;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* Adding responsiveness */
+        @media (max-width: 768px) {
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+                
+            }
+
+            section {
+                margin: 20px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>About EMusic</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <section>
+        <h2>Who We Are</h2>
+        <p>EMusic is an innovative music platform powered by advanced AI technologies. We are dedicated to providing personalized music experiences to users, helping them discover new tracks, artists, and genres based on their preferences and moods. Our platform is designed to create the ultimate music journey by combining data-driven insights with human creativity.</p>
+
+        <h3>AI-Powered Music Discovery</h3>
+        <p>Using artificial intelligence, EMusic analyzes user listening patterns, genres, and favorite artists to curate the best possible playlists tailored to individual tastes. Our algorithm continually evolves, learning more about your preferences as you interact with the platform, so you never miss out on a song that matches your mood. Whether you are at the gym, working, or just relaxing at home, we’ve got the perfect track ready for you.</p>
+
+        <h3>Seamless Spotify Integration</h3>
+        <p>At EMusic, we’re proud to collaborate with Spotify to bring you an integrated music streaming experience. Through this collaboration, users can easily access their favorite tracks, albums, and playlists on Spotify directly from the EMusic platform. All you have to do is click the link below to start listening:</p>
+        <p><a href="https://spotify.com" target="_blank">Listen to your favorite music on Spotify</a></p>
+
+        <h3>Join the Music Revolution</h3>
+        <p>We believe that music has the power to connect people across the globe, and through the magic of AI, we’re making that connection even more personal and powerful. Whether you're a casual listener, a music enthusiast, or an artist looking to connect with your fans, EMusic is the platform that’s designed to enrich your musical experience.</p>
+        <p>Become part of the EMusic community today and unlock a world of music curated just for you, powered by AI and ready to take your musical journey to the next level.</p>
+
+        <h3>AI Features</h3>
+        <ul>
+            <strong>Personalized Recommendations:</strong> Based on your listening history, our AI suggests tracks and playlists tailored just for you.
+            <strong>Smart Playlists:</strong> Let our AI create playlists that evolve with your mood, activities, and time of day.
+            <strong>New Music Discovery:</strong> Always find something fresh with our AI-powered suggestions that introduce you to new artists and genres.
+            <strong>Artist Collaboration:</strong> Discover upcoming artists and connect with them directly for an immersive music experience.
+        </ul>
+    </section>>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 EMusic. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

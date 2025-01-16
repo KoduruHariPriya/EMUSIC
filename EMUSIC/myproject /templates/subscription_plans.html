@@ -1,0 +1,280 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Page</title>
+
+    <!-- Link to Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #61dafb;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Button Styles */
+        .button {
+            display: inline-block;
+            background-color: #ff6347;
+            padding: 16px 32px;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:hover {
+            background-color: #f39c12;
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Subscription Plans Styles */
+        .plan-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .plan-card {
+            background-color: #21252b;
+            color: white;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 15px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .plan-card h5 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .plan-card p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .plan-card .price {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #ff6347;
+        }
+
+        .plan-card button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .plan-card button:hover {
+            background-color: #f39c12;
+        }
+        .modal-content {
+            background-color: #21252b;
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header, .modal-footer {
+            border: none;
+        }
+
+        .modal-header h5 {
+            color: #61dafb;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+        }
+
+        .list-group-item {
+            background-color: #1a1a1a;
+            border: none;
+            padding: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .list-group-item:hover {
+            background-color: #333;
+        }
+
+        .list-group-item h5 a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+
+        .list-group-item h5 a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-secondary {
+            background-color: #ff6347;
+            border: none;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f39c12;
+        }
+
+
+        /* Footer */
+        footer {
+            background-color: #21252b;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #ff6347;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Choose Your Subscription Plan</h1>
+        <p>Unlock premium features and support your favorite artists with our exclusive subscription plans.</p>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Subscription Card 1 -->
+            <div class="col-md-4">
+                <div class="plan-card">
+                    <h5>Basic Plan</h5>
+                    <p>Enjoy unlimited access to music with ads.</p>
+                    <div class="price">$10/month</div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentModal">Choose Payment</button>
+                </div>
+            </div>
+            <!-- Subscription Card 2 -->
+            <div class="col-md-4">
+                <div class="plan-card">
+                    <h5>Standard Plan</h5>
+                    <p>Stream ad-free music and get higher quality audio.</p>
+                    <div class="price">$20/month</div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentModal">Choose Payment</button>
+                </div>
+            </div>
+            <!-- Subscription Card 3 -->
+            <div class="col-md-4">
+                <div class="plan-card">
+                    <h5>Premium Plan</h5>
+                    <p>Enjoy the best experience with exclusive content and priority support.</p>
+                    <div class="price">$30/month</div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentModal">Choose Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Select Payment Method</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h5><a href="https://pay.google.com" target="_blank">Google Pay</a></h5>
+                        </li>
+                        <li class="list-group-item">
+                            <h5><a href="https://www.paypal.com" target="_blank">PayPal</a></h5>
+                        </li>
+                        <li class="list-group-item">
+                            <h5><a href="https://www.visa.com" target="_blank">Credit/Debit Card</a></h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

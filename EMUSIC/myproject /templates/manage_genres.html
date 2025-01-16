@@ -1,0 +1,250 @@
+{% block content %}
+  <header>
+    <h1>Manage Genres</h1>
+    <p>Control and update music genres to help users discover music based on their preferences.</p>
+  </header>
+  
+  <section class="professional-content">
+    <h2>Genre Management</h2>
+    <p>Here, you can modify and manage all music genres to ensure users have a seamless experience.</p>
+
+    <div class="service-container">
+      <div class="service-card">
+        <h3>Add New Genre</h3>
+        <p>Introduce new genres to the platform to keep music discovery fresh and exciting.</p>
+        <a href="https://open.spotify.com/playlist/2zgeKW2m3Le8hRmF4PzIsm" class="button" target="_blank">Add New Genre</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Edit Genre Details</h3>
+        <p>Edit existing genres to ensure their details are correct and up-to-date.</p>
+        <a href="#" class="button">Edit Genre</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Delete Genre</h3>
+        <p>Remove outdated or irrelevant genres from the platform.</p>
+        <a href="#" class="button">Delete Genre</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 EMusic. All Rights Reserved.</p>
+  </footer>
+{% endblock %}
+
+<style>
+  /* Global Styles */
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000000; /* Light background to match the home page */
+    color: #333;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #61dafb; /* Soft blue color */
+    letter-spacing: 1px;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+    text-transform: uppercase;
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  h2 {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+  }
+
+  h3 {
+    font-size: 2.5rem;
+    color: #f39c12;
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    font-weight: 400;
+    opacity: 0.8;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Header Background */
+  header {
+    background-image: url('https://source.unsplash.com/1600x900/?music,concert');
+    background-size: cover;
+    background-position: center;
+    padding: 120px 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    text-align: center;
+    position: relative;
+    color: white;
+  }
+
+  header h1 {
+    font-size: 5rem;
+    text-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+
+  header p {
+    font-size: 1.6rem;
+    font-weight: 300;
+    opacity: 0.9;
+    margin: 20px auto;
+    max-width: 800px;
+  }
+
+  header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    z-index: 0;
+  }
+
+  /* Section with Card style for services */
+  .professional-content {
+    background: #34495e;
+    color: #ecf0f1;
+    padding: 60px 20px;
+    width: 100%;
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  .professional-content h2 {
+    font-size: 3.5rem;
+    margin-bottom: 40px;
+  }
+
+  .professional-content p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Service Container Flexbox */
+  .service-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  /* Individual Service Card */
+  .service-card {
+    background: #34495e;
+    border-radius: 15px;
+    padding: 30px;
+    width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: white;
+    text-align: center;
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .service-card h3 {
+    font-size: 2rem;
+    color: #f39c12;
+    margin-bottom: 15px;
+  }
+
+  .service-card p {
+    font-size: 1.1rem;
+    color: #ecf0f1;
+  }
+
+  /* Button Styles */
+  .button {
+    display: inline-block;
+    background-color: #ff6347;
+    padding: 16px 32px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 18px;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .button:hover {
+    background-color: #f39c12;
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Footer */
+  footer {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin-top: 60px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  footer a {
+    color: #ff6347;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 3rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+
+    .service-card {
+      width: 90%;
+      margin: 10px 0;
+    }
+
+    .service-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>

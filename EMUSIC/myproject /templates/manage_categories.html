@@ -1,0 +1,243 @@
+{% block content %}
+  <header>
+    <h1>Manage Categories</h1>
+    <p>Manage and categorize music genres to make it easier for users to discover music.</p>
+  </header>
+
+  <section class="professional-content">
+    <h2>Category Management</h2>
+    <!-- Centered paragraph below the title -->
+    <p class="centered-description">You can create, modify, or delete music categories to ensure easy navigation for users.</p>
+
+    <div class="service-cards">
+      <div class="service-card">
+        <h3>Add New Category</h3>
+        <p>Add a new music category to keep up with the latest trends and genres.</p>
+        <a href="https://open.spotify.com/playlist/1jIN3Y3Z4ViBmZwarMqxHN" target="_blank" class="button">Create Playlist on Spotify</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Edit Existing Categories</h3>
+        <p>Modify and manage existing categories to keep content organized.</p>
+        <a href="https://open.spotify.com/playlist/1jIN3Y3Z4ViBmZwarMqxHN" target="_blank" class="button">Edit Playlist on Spotify</a>
+        <p class="instruction-text">Once you're on the playlist page, click the three dots to access the playlist options, where you can edit the name, description, or image.</p>
+      </div>
+
+      <div class="service-card">
+        <h3>Delete Categories</h3>
+        <p>Remove obsolete or unwanted categories from the system.</p>
+        <a href="https://open.spotify.com/playlist/1jIN3Y3Z4ViBmZwarMqxHN" target="_blank" class="button">Delete Playlist on Spotify</a>
+        <p class="instruction-text">Once you're on the playlist page, click the three dots to access the playlist options, where you can delete the name, remove from profile, or image.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 EMusic. All Rights Reserved.</p>
+  </footer>
+{% endblock %}
+
+<style>
+  /* Global Styles */
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    color: #333;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #61dafb;
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    font-weight: 400;
+    opacity: 0.8;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Header Background */
+  header {
+    background-image: url('https://source.unsplash.com/1600x900/?music,concert');
+    background-size: cover;
+    background-position: center;
+    padding: 120px 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    text-align: center;
+    position: relative;
+    color: white;
+  }
+
+  header h1 {
+    font-size: 5rem;
+    text-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+
+  header p {
+    font-size: 1.6rem;
+    font-weight: 300;
+    opacity: 0.9;
+    margin: 20px auto;
+    max-width: 800px;
+  }
+
+  header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    z-index: 0;
+  }
+
+  /* Section with Card style for services */
+  .professional-content {
+    background: #34495e;
+    color: #ecf0f1;
+    padding: 60px 20px;
+    width: 100%;
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  .professional-content h2 {
+    font-size: 3.5rem;
+    margin-bottom: 40px;
+    width: 100%;
+  }
+
+  /* Centered paragraph style for description */
+  .centered-description {
+    font-size: 1.3rem;
+    margin: 0 auto 40px;
+    font-weight: 400;
+    max-width: 800px;
+    line-height: 1.8;
+  }
+
+  /* Flexbox container for service cards */
+  .service-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding: 0 20px;
+  }
+
+  .service-card {
+    background: #34495e;
+    border-radius: 15px;
+    padding: 30px;
+    width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: white;
+    text-align: center;
+    margin: 10px 0;
+    flex: 1 1 280px; /* Flex for responsive width */
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .service-card h3 {
+    font-size: 3rem;
+    color: #f39c12;
+    margin-bottom: 15px;
+  }
+
+  .service-card p {
+    font-size: 1.1rem;
+    color: #ecf0f1;
+  }
+
+  /* Button Styles */
+  .button {
+    display: inline-block;
+    background-color: #ff6347;
+    padding: 16px 32px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 18px;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .button:hover {
+    background-color: #f39c12;
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Footer */
+  footer {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin-top: 60px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  footer a {
+    color: #ff6347;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 3rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+
+    .service-card {
+      width: 90%;
+      margin: 10px 0;
+    }
+
+    .button {
+      width: 80%;
+    }
+  }
+</style>

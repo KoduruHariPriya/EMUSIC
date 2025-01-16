@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #141414; /* Light gray background, similar to login/signup pages */
+            color: #fff; /* Dark text for readability */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container Styles */
+        .container-fluid {
+            padding: 50px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Form Styling */
+        .form-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Page Header */
+        h3.page-header, h4.page-header {
+            color: #2980b9; /* Consistent with home page */
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Form Group */
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #fff; /* Dark text for labels */
+        }
+
+        .form-group input {
+            font-size: 1em;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd; /* Light border for inputs */
+            width: 100%;
+            margin-bottom: 15px;
+            background-color: #141414;
+        }
+
+        /* Buttons */
+        .form-group .btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .form-group .btn {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 48%;
+            min-width: 130px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+
+        .btn-primary:hover {
+            background-color: #141414;
+            border-color: #141414;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+
+        /* Table Styles */
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #141414;
+            margin-top: 30px;
+        }
+
+        .table th {
+            background-color: #141414;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .table td {
+            background-color: #141414;
+            text-align: center;
+            font-size: 1em;
+            padding: 12px;
+        }
+
+        .table-bordered {
+            border: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #e1c5c5;
+        }
+
+        tbody tr:hover {
+            background-color: #141414;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Registration Form -->
+            <div class="form-container">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token %}
+                    <h3 class="page-header">Register</h3>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" class="form-control" name="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <input type="text" class="form-control" name="gender" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact</label>
+                        <input type="text" class="form-control" name="contact" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mail</label>
+                        <input type="email" class="form-control" name="mail" required>
+                    </div>
+                    <div class="form-group btn-container">
+                        <input type="Submit" value="Register" class="btn btn-primary">
+                        <input type="Reset" value="Clear" class="btn btn-danger">
+                    </div>
+                </form>
+            </div>
+
+            <!-- View Details Section -->
+            {% if datas %}
+            <div class="form-container">
+                <h4 class="page-header">View Details</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>S.no</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in datas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ data.Name }}</td>
+                            <td>{{ data.Age }}</td>
+                            <td>{{ data.Gender }}</td>
+                            <td>{{ data.Address }}</td>
+                            <td>{{ data.Contact }}</td>
+                            <td>{{ data.Mail }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">No records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+             {% else %}
+               <p class="text-center">No records available to display.</p>
+            {% endif %}
+
+</body>
+</html>
